@@ -60,3 +60,8 @@ class Node:
     def print_list(self):
         print(self.list)
 
+# function to find the blank/zero in the array
+def find_blank(arr):
+    coordinates = np.where(arr == '0')
+    coordinates = list(zip(coordinates[0], coordinates[1]))
+    return coordinates[0][0], coordinates[0][1]
