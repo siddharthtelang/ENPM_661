@@ -69,6 +69,7 @@ def find_blank(arr):
 # function to find the moves from the parent node
 def find_moves(i, j, parent):
     moves = ['up', 'down', 'left', 'right']
+    boundary = parent.arr.shape[0]
     if (j == 0):
         moves.remove('left')
     if (j == boundary-1):
@@ -106,3 +107,40 @@ def ActionMoveDown(node):
     arr = node.arr
     arr[i][j], arr[i+1][j] = arr[i+1][j], arr[i][j]
     return arr
+
+# define main class
+def main():
+    # initialize the cases
+    test1 = ['1','2','3','4','5','6','0','8','9','10','7','12','13','14','11','15']
+    test2 = ['1','0','3','4','5','2','7','8','9','6','10','11','13','14','15','12']
+    test3 = ['0','2','3','4','1','5','7','8','9','6','11','12','13','10','14','15']
+    test4 = ['5','1','2','3','0','6','7','4','9','10','11','8','13','14','15','12']
+    test5 = ['1','6','2','3','9','5','7','4','0','10','11','8','13','14','15','12']
+
+    # NOTE: below variable needs to be modified if test case changes, eg. toTest = test5 if test case 5 is to be checked
+    toTest = test5
+
+    # final goal
+    final = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','0']
+
+    # convert final goal state and inital state to array
+    final_arr = np.reshape(final, (4,4))
+    toTest_arr = np.reshape(toTest, (4,4))
+
+    # initialize queue which will store the nodes to be expanded. By default, store the test case state
+    mainQueue = Queue()
+    mainQueue.enque(toTest)
+
+    # print the initial stage
+    mainQueue.__print__()
+    print(toTest_arr)
+
+    # define flag to set if goal reached and a count for number of expansions
+    flag, count = 0, 0
+
+    # define mainList which stores all the nodes expanded and append the test case
+    mainList = []
+    mainList.append(toTest)
+
+    # define a list to back trace the goal state. This will hold all the object of nodes traversed
+    backTrack = []
