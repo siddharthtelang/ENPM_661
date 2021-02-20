@@ -65,3 +65,44 @@ def find_blank(arr):
     coordinates = np.where(arr == '0')
     coordinates = list(zip(coordinates[0], coordinates[1]))
     return coordinates[0][0], coordinates[0][1]
+
+# function to find the moves from the parent node
+def find_moves(i, j, parent):
+    moves = ['up', 'down', 'left', 'right']
+    if (j == 0):
+        moves.remove('left')
+    if (j == boundary-1):
+        moves.remove('right')
+    if (i == 0):
+        moves.remove('up')
+    if (i == boundary-1):
+        moves.remove('down')
+    return moves
+
+# function to move the blank element to left and return the array
+def ActionMoveLeft(node):
+    arr = node.arr
+    i, j = node.i, node.j
+    arr[i][j], arr[i][j-1]  = arr[i][j-1], arr[i][j]
+    return arr
+
+# function to move the blank element to right and return the array
+def ActionMoveRight(node):
+    i, j = node.i, node.j
+    arr = node.arr
+    arr[i][j], arr[i][j+1] = arr[i][j+1], arr[i][j]
+    return arr
+
+# function to move the blank element up and return the array
+def ActionMoveUp(node):
+    i, j = node.i, node.j
+    arr = node.arr
+    arr[i][j], arr[i-1][j] = arr[i-1][j], arr[i][j]
+    return arr
+
+# function to move the blank element down and return the array
+def ActionMoveDown(node):
+    i, j = node.i, node.j
+    arr = node.arr
+    arr[i][j], arr[i+1][j] = arr[i+1][j], arr[i][j]
+    return arr
