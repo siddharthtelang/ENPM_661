@@ -1,3 +1,15 @@
+#!/usr/bin/python3
+
+# ========================================
+# ENPM661 Spring 2021: Planning for Autonomous Robots
+# Given a initial states of a 15 puzzle, reach the goal state
+# Keep a track of parent nodes to back trace from goal to initial state
+#
+# Author: Siddharth Telang(stelang@umd.edu)
+# ========================================
+# Run as 'python3 15_puzzle_solver.py --case test5'
+# To run other test cases, replace the argument of --case with the test case number
+
 import argparse
 import array
 import copy
