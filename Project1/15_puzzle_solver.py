@@ -265,6 +265,12 @@ if __name__ == '__main__':
     elif args.case == 'test2': toTest = test2
     elif args.case == 'test3':  toTest = test3
     elif args.case == 'test4':  toTest = test4
+
+    # check if the test path is already at the goal state ; exit if this is the case
+    if convert2List(toTest) == final:
+        print('Already at goal state ; exit')
+        exit()
+
     # find the path and get the traversed node list and back tracking list having details of all nodes
     mainList, backTrack = path(toTest)
 
