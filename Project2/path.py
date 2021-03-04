@@ -40,4 +40,19 @@ def isInObstacleSpace(i,j):
         print('Tending towards rectangle ; avoid')
         return flag
 
+    if (i > 400 or i < 0 or j < 0 or j > 300):
+        flag = 1
+        print('Tending out of boundary ; avoid')
+        return flag
     return flag
+
+def find_moves(i,j):
+    root2 = 1.414
+    moves = ['N','NE', 'E', 'SE', 'S', 'SW','W', 'NW']
+    final_moves = ['N','NE', 'E', 'SE', 'S', 'SW','W', 'NW']
+    move_i = [i, i+root2, i+1, i+root2, i, i-root2, i-1, i-root2]
+    move_j = [j+1, j+root2, j, j-root2, j-1, j-root2, j, j+root2]
+    for move in range(len(moves)):
+        if isInObstacleSpace(move_i[move], move_j[move]):
+            final_moves.remove(moves[move])
+    print(final_moves)
