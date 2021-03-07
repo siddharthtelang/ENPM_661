@@ -144,6 +144,41 @@ def backTrace(backTrack, goal):
     track.pop(0)
     return track
 
+def generateMap(xlist, ylist, mainList):
+    map = cv2.imread('map.jpg')
+    map = cv2.resize(map, (401,301))
+    # describe the boundary with red lines
+    map[:1,:], map[:,:1], map[:,-2], map[-2,:] = [0,0,255], [0,0,255], [0,0,255], [0,0,255]
+    video = cv2.VideoWriter('BFS_Final_Video.avi',cv2.VideoWriter_fourcc(*'XVID'), 100,(401,301))
+
+    # for all the visited nodes, set the region as white
+    for i in range(len(mainList)):
+        # change to image coordinate for Y axis
+        (mainList[i])[1] = 300 -  (mainList[i])[1]
+        x = (mainList[i])[0]
+        y = (mainList[i])[1]
+        map[y][x] = 255
+        video.write(map)
+
+    # wait for 2s
+    for i in range(0,200):
+        video.write(map)
+
+    # highlight the final path from initial to goal state in red color
+    for i,j in zip(xlist,ylist):
+        map[j][i] = [0,0,255]
+        video.write(map)
+
+    # wait for 2s before the video finishes
+    for i in range(0,200):
+        video.write(map)
+
+    video.release()
+    map = cv2.resize(map, (1080,720))
+    # save the final map having the highlighted path and traversed nodes
+    cv2.imwrite('final_map.jpg', map)
+
+
 def main():
     while(True):
         print('Enter the initial start point one by one - x: 0-399 ; y - 0-299')
@@ -218,25 +253,28 @@ def main():
         if (flag == 1):
             break
 
-    print('Goal state reached... Back tracking now')
+    print('Goal state reached... Back tracking now.............')
     #printDebugLines(mainList, backTrack)
 
     # list to store back traced coordinataes
     xlist,ylist = [],[]
+
     # back trace the points
     track = backTrace(backTrack, goal_state)
 
     for i in range(len(track)):
-        # print(track[i].parent_state)
         xlist.append((track[i].parent_state)[0])
         # As cartesian coordinates are different than image coordinates, flip the Y coordinates
         ylist.append( 300 - (track[i].parent_state)[1] )
-    # print(track[-1].state)
 
     # store the goal points in terms of image coordinates
     xlist.append((track[-1].state)[0])
     ylist.append( 300 - (track[-1].state)[1])
 
+    # generate the video and map from the back tracked list and all the traversed node list
+    print('Generating Map.........................')
+    generateMap(xlist, ylist, mainList)
+    print('Final map and video rendered...... Please check the main folder')
 
 
 if __name__ == '__main__':
