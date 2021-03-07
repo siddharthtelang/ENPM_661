@@ -131,6 +131,19 @@ def printDebugLines(mainList, backTrack):
         print(backTrack[i].parent_state)
         print('---------------------------------------------------------------------\n')
 
+# function to back track the nodes
+def backTrace(backTrack, goal):
+    track, parent_state, last_parent_index  = [], [], -1
+    for i in reversed(range(len(backTrack))):
+        if last_parent_index == backTrack[i].parent_index:
+            continue
+        if backTrack[i].state == goal or backTrack[i].state == parent_state:
+            last_parent_index = backTrack[i].parent_index
+            parent_state = backTrack[i].parent_state
+            track.insert(0,backTrack[i])
+    track.pop(0)
+    return track
+
 def main():
     while(True):
         print('Enter the initial start point one by one - x: 0-399 ; y - 0-299')
@@ -207,6 +220,23 @@ def main():
 
     print('Goal state reached... Back tracking now')
     #printDebugLines(mainList, backTrack)
+
+    # list to store back traced coordinataes
+    xlist,ylist = [],[]
+    # back trace the points
+    track = backTrace(backTrack, goal_state)
+
+    for i in range(len(track)):
+        # print(track[i].parent_state)
+        xlist.append((track[i].parent_state)[0])
+        # As cartesian coordinates are different than image coordinates, flip the Y coordinates
+        ylist.append( 300 - (track[i].parent_state)[1] )
+    # print(track[-1].state)
+
+    # store the goal points in terms of image coordinates
+    xlist.append((track[-1].state)[0])
+    ylist.append( 300 - (track[-1].state)[1])
+
 
 
 if __name__ == '__main__':
