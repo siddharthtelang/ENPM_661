@@ -3,6 +3,7 @@
 # ========================================
 # ENPM661 Spring 2021: Planning for Autonomous Robots
 # Project 2
+# Point robot planning in an obstacle environment using BFS algorithm
 #
 # Author: Siddharth Telang(stelang@umd.edu)
 # ========================================
@@ -93,7 +94,7 @@ def isInObstacleSpace(i,j):
     d8 = abs((j+(0.1135*i)-182) / (1 + (0.1135**2))**0.5)
 
     if ((d1<=1.5 and j>=63 and j<=116) or (d4<=1.5 and j>=63 and j<=105 ) or (d2 <= 1.5 and j>=105 and j<=145) or
-        (d8<=1.5 and j>=142 and j<=145) or (d5<=1.5 and j>=142 and j<=171) or (i==381 and j<=171 and j>=116)):
+        (d8<=1.5 and j>=142 and j<=145 and i>=325 and i<=352) or (d5<=1.5 and j>=142 and j<=171) or (i==381 and j<=171 and j>=116)):
         print('Tending towards quad; avoid')
         return 1
 
@@ -148,7 +149,7 @@ def generateMap(xlist, ylist, mainList):
     map = cv2.imread('map.jpg')
     map = cv2.resize(map, (401,301))
     # describe the boundary with red lines
-    map[:1,:], map[:,:1], map[:,-2], map[-2,:] = [0,0,255], [0,0,255], [0,0,255], [0,0,255]
+    map[:1,:], map[:,:1], map[:,-2], map[-1,:] = [0,0,255], [0,0,255], [0,0,255], [0,0,255]
     video = cv2.VideoWriter('BFS_Final_Video.avi',cv2.VideoWriter_fourcc(*'XVID'), 100,(401,301))
 
     # for all the visited nodes, set the region as white
@@ -164,9 +165,9 @@ def generateMap(xlist, ylist, mainList):
     for i in range(0,200):
         video.write(map)
 
-    # highlight the final path from initial to goal state in red color
+    # highlight the final path from initial to goal state in green color
     for i,j in zip(xlist,ylist):
-        map[j][i] = [0,0,255]
+        map[j][i] = [0,100,0]
         video.write(map)
 
     # wait for 2s before the video finishes
